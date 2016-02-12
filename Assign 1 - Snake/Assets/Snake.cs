@@ -37,6 +37,7 @@ public class Snake : MonoBehaviour {
 
     //points per food
     int _addPoints = 100;
+    int _tailPoints = 10;
 
     Vector3 _startPoint = new Vector3(0, -7, 10);
 
@@ -44,10 +45,13 @@ public class Snake : MonoBehaviour {
     Text _livesText;
     Text _scoreText;
 
-	/// <summary>
+    //key to get from player pref
+    string _key = "HIGH_SCORE";
+
+    /// <summary>
     /// Used at startup
     /// </summary>
-	void Start () {
+    void Start () {
 
         //repeat call to Move every 0.1s
         InvokeRepeating("Move", moveSpeed, moveSpeed);
@@ -60,35 +64,44 @@ public class Snake : MonoBehaviour {
         //check for right arrow
         if (Input.GetKey(KeyCode.RightArrow))
         {
-            if(_setDirection != Vector2.left)
+            if (_setDirection != Vector2.left)
             {
                 //set direction
                 _setDirection = Vector2.right;
             }
         }//check for left arrow
-        else if(Input.GetKey(KeyCode.LeftArrow))
+        else
         {
-            if (_setDirection != Vector2.right)
+            if (Input.GetKey(KeyCode.LeftArrow))
             {
-                //set direction
-                _setDirection = Vector2.left;
+                if (_setDirection != Vector2.right)
+                {
+                    //set direction
+                    _setDirection = Vector2.left;
+                }
+            }//check for up arrow
+            else
+            {
+                if (Input.GetKey(KeyCode.UpArrow))
+                {
+                    if (_setDirection != Vector2.down)
+                    {
+                        //set direction
+                        _setDirection = Vector2.up;
+                    }
+                }//check for down arrow
+                else
+                {
+                    if (Input.GetKey(KeyCode.DownArrow))
+                    {
+                        if (_setDirection != Vector2.up)
+                        {
+                            //set direction
+                            _setDirection = Vector2.down;
+                        }
+                    }
+                }
             }
-        }//check for up arrow
-        else if (Input.GetKey(KeyCode.UpArrow))
-        {
-            if (_setDirection != Vector2.down)
-            {
-                //set direction
-                _setDirection = Vector2.up;
-            }
-        }//check for down arrow
-        else if (Input.GetKey(KeyCode.DownArrow))
-        {
-            if (_setDirection != Vector2.up)
-            {
-                //set direction
-                _setDirection = Vector2.down;
-            }           
         }
 	}
 
@@ -139,7 +152,7 @@ public class Snake : MonoBehaviour {
             _ateFood = true;
             //add points
             _totalScore += _addPoints;
-            _addPoints = (int)(_addPoints * 1.5);
+            _addPoints = (int)(_addPoints + (tailList.Count() * _tailPoints));
             //change value in UI
             _scoreText = GameObject.Find("scoreText").GetComponent<Text>();
             _scoreText.text = _totalScore.ToString("000000000000000");
@@ -167,7 +180,24 @@ public class Snake : MonoBehaviour {
             //check if game over
             if (livesLeft == 0)
             {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                //check for high score
+                if (PlayerPrefs.HasKey(_key))
+                {
+                    //get high sore
+                    var _high_score = PlayerPrefs.GetInt(_key);
+                    //check current vs highscore
+                    if(_totalScore > _high_score)
+                    {
+                        //set new high score
+                        PlayerPrefs.SetInt(_key, _totalScore);
+                    }
+                }
+                else
+                {
+                    //set new high score
+                    PlayerPrefs.SetInt(_key, _totalScore);
+                }
+                SceneManager.LoadScene("Main");
             }
         }
     }

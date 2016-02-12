@@ -1,0 +1,19 @@
+Sources
+*****************
+snake icon from
+http://icons.iconarchive.com/icons/martin-berube/animal/256/snake-icon.png
+
+pixel - for head and food
+http://noobtuts.com/content/unity/2d-snake-game/snake.png
+
+vertical borders
+http://noobtuts.com/content/unity/2d-snake-game/border_vertical.png
+
+horizontal borders
+http://noobtuts.com/content/unity/2d-snake-game/border_horizontal.png	
+
+crt shader + script
+http://forum.unity3d.com/threads/crt-shader.200726/textr.html
+
+snake title made with 
+http://www.picturetopeople.org/text_generator/others/transparent/transparent-text-generator.html
